@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <net.wujingchao.android.view.SimpleTagImageView
+            xmlns:simple="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stiv"
+            android:layout_width="150dip"
+            android:layout_height="150dip"
+            android:src="@drawable/qq"
+            simple:simple_tag_textSize="18sp"
+            simple:simple_corner_distance="30dp"
+            simple:simple_tag_text="AB"
+            simple:simple_tag_background_color="#af27CDC0"
+            simple:simple_tag_orientation="left_bottom"/>
+
+<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow>
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="textSizePlus"
+                    android:text="@string/textSizePlus"/>
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="textSizeReduce"
+                    android:text="@string/textSizeReduce"/>
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="cornerDistancePlus"
+                    android:text="@string/cornerDistancePlus"/>
+
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="cornerDistanceReduce"
+                    android:text="@string/cornerDistanceReduce"/>
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="changeTextColor"
+                    android:text="@string/changeTextColor"/>
+            </TableRow>
+
+            <TableRow>
+                <EditText
+                    android:hint="@string/tag"
+                    android:id="@+id/tv"
+                    android:layout_weight="2"/>
+                <Button
+                    android:layout_weight="1"
+                    android:text="@string/changeTagText"
+                    android:onClick="changeTagText"/>
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="changeTagBackgroundColor"
+                    android:text="@string/changeTagBackgroundColor"/>
+            </TableRow>
+            <TableRow>
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="tagWidthPlus"
+                    android:text="@string/tagWidthPlus"/>
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="tagWidthReduce"
+                    android:text="@string/tagWidthReduce"/>
+            </TableRow>
+            <TableRow>
+                <Button
+                    android:layout_weight="1"
+                    android:onClick="changeTagOrientation"
+                    android:text="@string/changeTagOrientation"/>
+            </TableRow>
+
+        </TableLayout>
+</ScrollView>
+
+</LinearLayout>

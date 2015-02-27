@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SimpleTagImageView">
+        <attr name="simple_corner_distance" format="dimension" />
+        <attr name="simple_tag_width" format="dimension"/>
+        <attr name="simple_tag_background_color" format="color"/>
+        <attr name="simple_tag_text" format="string"/>
+        <attr name="simple_tag_textSize" format="dimension" />
+        <attr name="simple_tag_textColor" format="color"/>
+        <attr name="simple_tag_orientation" format="enum">
+            <enum name="left_top" value="0"/>
+            <enum name="right_top" value="1"/>
+            <enum name="left_bottom" value="2"/>
+            <enum name="right_bottom" value="3"/>
+        </attr>
+    </declare-styleable>
+</resources>
