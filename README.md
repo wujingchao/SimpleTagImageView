@@ -1,4 +1,4 @@
-# SimpleTagImage
+# SimpleTagImageView
 ImageView with a tag in android 
 
 # Demo
