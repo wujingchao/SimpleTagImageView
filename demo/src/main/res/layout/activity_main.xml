@@ -13,7 +13,9 @@
             simple:simple_corner_distance="30dp"
             simple:simple_tag_text="AB"
             simple:simple_tag_background_color="#af27CDC0"
-            simple:simple_tag_orientation="left_bottom"/>
+            simple:simple_tag_orientation="left_bottom"
+            simple:simple_tag_width="20dip"
+            simple:simple_tag_textColor="@android:color/white"/>
 
 <ScrollView
         android:layout_width="match_parent"
