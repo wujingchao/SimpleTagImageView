@@ -79,11 +79,11 @@ public class SimpleTagImageView extends ImageView {
         mDensity = context.getResources().getDisplayMetrics().density;
         TypedArray typeArray = context.obtainStyledAttributes(attrs,R.styleable.SimpleTagImageView,defStyleAttr,0);
         mTagOrientation = typeArray.getInteger(R.styleable.SimpleTagImageView_simple_tag_orientation,0);
-        mTagWidth = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_width, (int) (mDensity * DEFAULT_TAG_WIDTH));
-        mCornerDistance = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_corner_distance,(int) (mDensity * DEFAULT_CORNER_DISTANCE));
+        mTagWidth = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_width, dip2px(DEFAULT_TAG_WIDTH));
+        mCornerDistance = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_corner_distance,dip2px(DEFAULT_CORNER_DISTANCE));
         mTagBackgroundColor = typeArray.getColor(R.styleable.SimpleTagImageView_simple_tag_background_color,DEFAULT_TAG_BACKGROUND_COLOR);
         mTagText = typeArray.getString(R.styleable.SimpleTagImageView_simple_tag_text);
-        mTagTextSize = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_textSize, DEFAULT_TAG_TEXT_SIZE);
+        mTagTextSize = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_textSize, dip2px(DEFAULT_TAG_TEXT_SIZE));
         mTagTextColor = typeArray.getColor(R.styleable.SimpleTagImageView_simple_tag_textColor, DEFAULT_TAG_TEXT_COLOR);
         typeArray.recycle();
         if(TextUtils.isEmpty(mTagText))mTagText = "";
@@ -153,8 +153,12 @@ public class SimpleTagImageView extends ImageView {
         }
     }
 
+    /**
+     *
+     * @param textSize unit:dip
+     */
     public void setTagTextSize(int textSize) {
-        this.mTagTextSize = textSize;
+        this.mTagTextSize = dip2px(textSize);
         invalidate();
     }
 
@@ -167,7 +171,7 @@ public class SimpleTagImageView extends ImageView {
      * @param cornerDistance unit:dip
      */
     public void setCornerDistance(int cornerDistance) {
-        this.mCornerDistance = (int)(cornerDistance * mDensity + 0.5f);
+        this.mCornerDistance = dip2px(cornerDistance);
         invalidate();
     }
 
@@ -232,7 +236,7 @@ public class SimpleTagImageView extends ImageView {
      *          3 : right_bottom
      */
     @SuppressWarnings("unused")
-    public int getmTagOrientation() {
+    public int getTagOrientation() {
         return mTagOrientation;
     }
 
@@ -243,9 +247,17 @@ public class SimpleTagImageView extends ImageView {
      *                       {@link #RIGHT_TOP} or
      *                       {@link #RIGHT_BOTTOM}
      */
-    public void setmTagOrientation(int tagOrientation) {
+    public void setTagOrientation(int tagOrientation) {
         this.mTagOrientation = tagOrientation;
         invalidate();
+    }
+
+    private int dip2px(int dip) {
+        return (int)(mDensity * dip + 0.5f);
+    }
+
+    private int px2dip(float px) {
+        return (int)(px/mDensity + 0.5f);
     }
 
     static class MyPoint {

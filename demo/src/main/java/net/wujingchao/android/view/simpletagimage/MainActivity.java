@@ -3,85 +3,195 @@ package net.wujingchao.android.view.simpletagimage;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import net.wujingchao.android.view.SimpleTagImageView;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 public class MainActivity extends Activity {
 
+    private final static String TAG = "MainActivity";
+
     private SimpleTagImageView mSimpleTagImageView;
-
-    private EditText mEt;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSimpleTagImageView = (SimpleTagImageView) findViewById(R.id.stiv);
-        mEt = (EditText) findViewById(R.id.tv);
+        setUpTextSizeSeekBar();
+        setUpCornerDistanceSeekBar();
+        setUpTextColorSpinner();
+        setUpTextTag();
+        setUpTagBackgroundColor();
+        setUpTagWidth();
+        setUpTagOrientation();
     }
 
-    public void textSizePlus(View view) {
-        mSimpleTagImageView.setTagTextSize(mSimpleTagImageView.getTagTextSize() + 1);
+    private void setUpTextSizeSeekBar() {
+        SeekBar mTextSizeSeekBar = (SeekBar) findViewById(R.id.sb_text_size);
+        mTextSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.d(TAG, "progress:" + progress);
+                mSimpleTagImageView.setTagTextSize(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
-    public void textSizeReduce(View view) {
-        mSimpleTagImageView.setTagTextSize(mSimpleTagImageView.getTagTextSize() - 1);
+    private void setUpCornerDistanceSeekBar() {
+        SeekBar mCornerDistanceSeekBar = (SeekBar) findViewById(R.id.sb_corner_distance);
+        mCornerDistanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSimpleTagImageView.setCornerDistance(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
-    public void cornerDistancePlus(View view) {
-        mSimpleTagImageView.setCornerDistance(mSimpleTagImageView.getCornerDistance() + 1);
+    private void setUpTextColorSpinner() {
+        final Map<String,Integer> colors = new LinkedHashMap<>();
+        colors.put("WHITE",Color.WHITE);
+        colors.put("RED",Color.RED);
+        colors.put("BLUE",Color.BLUE);
+        colors.put("CYAN",Color.CYAN);
+        colors.put("YELLOW",Color.YELLOW);
+        Spinner mSpinner = (Spinner) findViewById(R.id.spinner_text_color);
+        final Object [] keys = colors.keySet().toArray();
+        final SpinnerAdapter mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,keys);
+        mSpinner.setAdapter(mAdapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String key = (String) keys[position];
+                mSimpleTagImageView.setTagTextColor(colors.get(key));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
-    public void cornerDistanceReduce(View view) {
-        mSimpleTagImageView.setCornerDistance(mSimpleTagImageView.getCornerDistance() - 1);
+    private void setUpTextTag() {
+        EditText mEt = (EditText) findViewById(R.id.tv);
+        mEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mSimpleTagImageView.setTagText(s.toString());
+            }
+        });
     }
 
-    private int colors [] = {Color.RED,Color.BLUE,Color.CYAN,Color.YELLOW,Color.WHITE};
+    private void setUpTagBackgroundColor(){
+        final Map<String,Integer> colors = new LinkedHashMap<>();
+        colors.put("Green",0xaf27CDC0);
+        colors.put("RED",Color.RED);
+        colors.put("BLUE",Color.BLUE);
+        colors.put("CYAN",Color.CYAN);
+        colors.put("YELLOW",Color.YELLOW);
+        Spinner mSpinner = (Spinner) findViewById(R.id.spinner_background_color);
+        final Object [] keys = colors.keySet().toArray();
+        final SpinnerAdapter mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,keys);
+        mSpinner.setAdapter(mAdapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String key = (String) keys[position];
+                mSimpleTagImageView.setTagBackgroundColor(colors.get(key));
+            }
 
-    private int index = 0;
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-    public void changeTextColor(View view) {
-        index ++;
-        if(index > colors.length - 1)index = 0;
-        mSimpleTagImageView.setTagTextColor(colors[index]);
+            }
+        });
     }
 
-    public void changeTagText(View view) {
-        String tagText = mEt.getText().toString();
-        if(TextUtils.isEmpty(tagText))return;
-        mSimpleTagImageView.setTagText(tagText);
+    private void setUpTagWidth() {
+        SeekBar mTagWidthSeekBar = (SeekBar) findViewById(R.id.sb_tag_width);
+        mTagWidthSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSimpleTagImageView.setTagWidth(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
-    public void changeTagBackgroundColor(View view) {
-        index ++;
-        if(index > colors.length - 1)index = 0;
-        mSimpleTagImageView.setTagBackgroundColor(colors[index]);
-    }
+    private void setUpTagOrientation() {
+        final Map<String,Byte> orientations = new LinkedHashMap<>();
+        orientations.put("LEFT_TOP",SimpleTagImageView.LEFT_TOP);
+        orientations.put("RIGHT_TOP",SimpleTagImageView.RIGHT_TOP);
+        orientations.put("LEFT_BOTTOM",SimpleTagImageView.LEFT_BOTTOM);
+        orientations.put("RIGHT_BOTTOM",SimpleTagImageView.RIGHT_BOTTOM);
+        Spinner mSpinner = (Spinner) findViewById(R.id.spinner_tag_orientation);
+        final Object [] keys = orientations.keySet().toArray();
+        final SpinnerAdapter mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,keys);
+        mSpinner.setAdapter(mAdapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String key = (String) keys[position];
+                mSimpleTagImageView.setTagOrientation(orientations.get(key));
+            }
 
-    public void tagWidthPlus(View view) {
-        mSimpleTagImageView.setTagWidth(mSimpleTagImageView.getTagWidth() + 1);
-    }
-    public void tagWidthReduce(View view) {
-        mSimpleTagImageView.setTagWidth(mSimpleTagImageView.getTagWidth() - 1);
-    }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-    int [] orientations = {
-            SimpleTagImageView.LEFT_TOP,
-            SimpleTagImageView.RIGHT_TOP,
-            SimpleTagImageView.LEFT_BOTTOM,
-            SimpleTagImageView.RIGHT_BOTTOM
-    };
-
-    private int j = 0;
-
-    public void changeTagOrientation(View view) {
-        j++;
-        if(j >  orientations.length -1 ) j = 0;
-        mSimpleTagImageView.setmTagOrientation(orientations[j]);
+            }
+        });
     }
 }

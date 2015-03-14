@@ -4,16 +4,12 @@
     <string name="app_name">SimpleTagImage</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="textSizePlus">textSizePlus</string>
-    <string name="textSizeReduce">textSizeReduce</string>
-    <string name="cornerDistancePlus">cornerDistancePlus</string>
-    <string name="cornerDistanceReduce">cornerDistanceReduce</string>
     <string name="changeTextColor">changeTextColor</string>
     <string name="tag">tag</string>
     <string name="changeTagText">changeTagText</string>
     <string name="changeTagBackgroundColor">changeTagBackgroundColor</string>
-    <string name="tagWidthPlus">tagWidthPlus</string>
-    <string name="tagWidthReduce">tagWidthReduce</string>
+    <string name="tagWidthPlus">tagWidth+</string>
+    <string name="tagWidthReduce">tagWidth-</string>
     <string name="changeTagOrientation">changeTagOrientation</string>
 
 </resources>
