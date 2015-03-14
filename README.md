@@ -17,7 +17,7 @@ ImageView with a tag in android. So it's a ImageView.
             android:id="@+id/stiv"
             android:layout_width="150dip"
             android:layout_height="150dip"
-            android:src="@drawable/qq"
+            android:src="@drawable/qwer"
             simple:simple_tag_textSize="18sp"
             simple:simple_corner_distance="30dp"
             simple:simple_tag_text="AB"
