@@ -6,8 +6,7 @@ ImageView with a tag in android. So it's a ImageView.
    <img src="./demo1.png" width="226" alt="Screenshot"/>
 </p>
 
-<br/>
-<br/>
+<br>
 
 <img src="./demo3.gif" width="320" alt="Screenshot"/>
 
