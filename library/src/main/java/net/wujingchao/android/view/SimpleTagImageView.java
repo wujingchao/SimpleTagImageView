@@ -172,6 +172,7 @@ public class SimpleTagImageView extends ImageView {
      * @param cornerDistance unit:dip
      */
     public void setCornerDistance(int cornerDistance) {
+        if(this.mCornerDistance == cornerDistance)return;
         this.mCornerDistance = dip2px(cornerDistance);
         invalidate();
     }
@@ -182,7 +183,7 @@ public class SimpleTagImageView extends ImageView {
      */
     @SuppressWarnings("unused")
     public int getCornerDistance() {
-        return (int)(mCornerDistance/mDensity + 0.5f);
+        return px2dip(this.mCornerDistance);
     }
 
     @SuppressWarnings("unused")
@@ -191,6 +192,7 @@ public class SimpleTagImageView extends ImageView {
     }
 
     public void setTagTextColor(int tagTextColor) {
+        if(this.mTagTextColor == tagTextColor)return;
         this.mTagTextColor = tagTextColor;
         invalidate();
     }
@@ -200,12 +202,14 @@ public class SimpleTagImageView extends ImageView {
         return this.mTagText;
     }
 
-    public void setTagText(String mTagText){
-        this.mTagText = mTagText;
+    public void setTagText(String tagText){
+        if(tagText.equals(this.mTagText))return;
+        this.mTagText = tagText;
         invalidate();
     }
 
     public void setTagBackgroundColor(int tagBackgroundColor) {
+        if(this.mTagBackgroundColor == tagBackgroundColor)return;
         this.mTagBackgroundColor = tagBackgroundColor;
         invalidate();
     }
@@ -220,7 +224,7 @@ public class SimpleTagImageView extends ImageView {
      */
     @SuppressWarnings("unused")
     public int getTagWidth() {
-        return (int)(this.mTagWidth / mDensity + 0.5f);
+        return px2dip(this.mTagWidth);
     }
 
     /**
@@ -228,7 +232,7 @@ public class SimpleTagImageView extends ImageView {
      * @param tagWidth unit:dip
      */
     public void setTagWidth(int tagWidth) {
-        this.mTagWidth = (int)(tagWidth * mDensity + 0.5f);
+        this.mTagWidth = dip2px(tagWidth);
         invalidate();
     }
 
@@ -251,6 +255,7 @@ public class SimpleTagImageView extends ImageView {
      *                       {@link #RIGHT_BOTTOM}
      */
     public void setTagOrientation(int tagOrientation) {
+        if(tagOrientation == this.mTagOrientation)return;
         this.mTagOrientation = tagOrientation;
         invalidate();
     }
