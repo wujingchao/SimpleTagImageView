@@ -194,4 +194,20 @@ public class MainActivity extends Activity {
             }
         });
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(outState != null) {
+            outState.putString("tag_text",mSimpleTagImageView.getTagText());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null) {
+            mSimpleTagImageView.setTagText(savedInstanceState.getString("tag_text"));
+        }
+    }
 }

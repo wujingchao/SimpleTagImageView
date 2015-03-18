@@ -162,6 +162,7 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
+    @SuppressWarnings("unused")
     public int getTagTextSize(){
         return mTagTextSize;
     }
@@ -179,6 +180,7 @@ public class SimpleTagImageView extends ImageView {
      *
      * @return unit:dip
      */
+    @SuppressWarnings("unused")
     public int getCornerDistance() {
         return (int)(mCornerDistance/mDensity + 0.5f);
     }
@@ -216,6 +218,7 @@ public class SimpleTagImageView extends ImageView {
     /**
      * @return unit:dip
      */
+    @SuppressWarnings("unused")
     public int getTagWidth() {
         return (int)(this.mTagWidth / mDensity + 0.5f);
     }
@@ -256,6 +259,7 @@ public class SimpleTagImageView extends ImageView {
         return (int)(mDensity * dip + 0.5f);
     }
 
+    @SuppressWarnings("unused")
     private int px2dip(float px) {
         return (int)(px/mDensity + 0.5f);
     }
