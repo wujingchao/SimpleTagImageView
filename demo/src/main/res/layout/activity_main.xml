@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#0f45494A">
-
+ 
         <net.wujingchao.android.view.SimpleTagImageView
             xmlns:simple="http://schemas.android.com/apk/res-auto"
             android:id="@+id/stiv"
@@ -122,7 +122,7 @@
                     android:background="@android:color/darker_gray"
                     android:id="@+id/spinner_tag_scale_type"/>
                 <TextView
-                    android:text="ScaleType"
+                    android:text="ScaleType(When set round radius)"
                     android:layout_gravity="center_vertical"/>
             </TableRow>
         </TableLayout>

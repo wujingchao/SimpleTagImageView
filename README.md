@@ -6,7 +6,7 @@ ImageView with a tag in android. So it's a ImageView.
    <img src="./demo.png"  width="540" heigit="960" alt="Screenshot"/>
 
 
-###<font color="#D69696">Warning:When you set the radius,the imageview scale type just  support fitXY now!</font>
+####Warning:When you set the round radius,the simpletagimageview scale type just  support fitXY now!
 <br/>
 <p>
    <img src="./demo2.gif"  width="401" heigit="638" alt="Screenshot"/>
