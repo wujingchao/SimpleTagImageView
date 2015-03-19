@@ -1,7 +1,7 @@
 # SimpleTagImageView
 ImageView with a tag in android. So it's a ImageView.
 
-# Demo
+## Demo
 
    <img src="./demo.jpg"  width="540" heigit="960" alt="Screenshot"/>
 
@@ -13,6 +13,8 @@ ImageView with a tag in android. So it's a ImageView.
 </p>
 
 <br/>
+
+##Usage
 
     <net.wujingchao.android.view.SimpleTagImageView
             xmlns:simple="http://schemas.android.com/apk/res-auto"
@@ -34,7 +36,7 @@ ImageView with a tag in android. So it's a ImageView.
 #### In order to use it , just import as a module in android studio. In gradle dependencies append :
 	compile project(':library')  //library is your module name
 
-######You can mail me => wujingchao@aliyun.com 
+######You can mail me => wujingchao@aliyun.com
 
 
 
