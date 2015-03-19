@@ -3,7 +3,7 @@ ImageView with a tag in android. So it's a ImageView.
 
 # Demo
 
-   <img src="./demo.png"  width="540" heigit="960" alt="Screenshot"/>
+   <img src="./demo.jpg"  width="540" heigit="960" alt="Screenshot"/>
 
 
 ####Warning:When you set the round radius,the simpletagimageview scale type just  support fitXY now!
