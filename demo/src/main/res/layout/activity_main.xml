@@ -10,6 +10,7 @@
             android:layout_margin="18dip"
             android:layout_width="256dip"
             android:layout_height="192dip"
+            android:scaleType="fitXY"
             android:src="@drawable/qwer"
             simple:simple_tag_textSize="18sp"
             simple:simple_corner_distance="30dp"
@@ -17,7 +18,9 @@
             simple:simple_tag_background_color="#af27CDC0"
             simple:simple_tag_orientation="left_bottom"
             simple:simple_tag_width="20dip"
-            simple:simple_tag_textColor="@android:color/white"/>
+            simple:simple_tag_textColor="@android:color/white"
+            simple:simple_tag_enable="true"
+            simple:simple_tag_round_radius="20dp"/>
 
 <ScrollView
         android:layout_width="match_parent"
@@ -79,6 +82,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="BackgroundColor"/>
             </TableRow>
+
             <TableRow>
                 <SeekBar
                     android:id="@+id/sb_tag_width"
@@ -88,6 +92,7 @@
                     android:text="TagWidth"
                     android:layout_gravity="center_vertical"/>
             </TableRow>
+
             <TableRow>
                 <Spinner
                     android:layout_height="30dip"
@@ -99,6 +104,27 @@
                     android:layout_gravity="center_vertical"/>
             </TableRow>
 
+            <TableRow>
+                <SeekBar
+                    android:id="@+id/sb_tag_round_radius"
+                    android:max="40"
+                    android:progress="20"/>
+                <TextView
+                    android:text="TagRoundRadius"
+                    android:layout_gravity="center_vertical"/>
+            </TableRow>
+
+            <!-- scale type-->
+            <TableRow>
+                <Spinner
+                    android:layout_height="30dip"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:id="@+id/spinner_tag_scale_type"/>
+                <TextView
+                    android:text="ScaleType"
+                    android:layout_gravity="center_vertical"/>
+            </TableRow>
         </TableLayout>
 </ScrollView>
 

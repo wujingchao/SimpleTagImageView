@@ -2,12 +2,20 @@ package net.wujingchao.android.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import wujingchao.net.mylibrary.R;
@@ -16,6 +24,8 @@ import wujingchao.net.mylibrary.R;
  * @author wujingchao  2015-02-20 email:wujingchao@aliyun.com
  */
 public class SimpleTagImageView extends ImageView {
+
+    private final static String TAG = "SimpleTagImageView";
 
     public  static final byte LEFT_TOP = 0x00;
 
@@ -65,6 +75,14 @@ public class SimpleTagImageView extends ImageView {
 
     private MyPoint endPoint;
 
+    private Paint mBitmapPaint;
+
+    private RectF mRoundRect;
+
+    private boolean mTagEnable;
+
+    private int mRoundRadius;
+
     public SimpleTagImageView(Context context) {
         this(context, null);
     }
@@ -73,19 +91,20 @@ public class SimpleTagImageView extends ImageView {
         this(context, attrs, 0);
     }
 
-
     public SimpleTagImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mDensity = context.getResources().getDisplayMetrics().density;
-        TypedArray typeArray = context.obtainStyledAttributes(attrs,R.styleable.SimpleTagImageView,defStyleAttr,0);
-        mTagOrientation = typeArray.getInteger(R.styleable.SimpleTagImageView_simple_tag_orientation,0);
-        mTagWidth = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_width, dip2px(DEFAULT_TAG_WIDTH));
-        mCornerDistance = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_corner_distance,dip2px(DEFAULT_CORNER_DISTANCE));
-        mTagBackgroundColor = typeArray.getColor(R.styleable.SimpleTagImageView_simple_tag_background_color,DEFAULT_TAG_BACKGROUND_COLOR);
-        mTagText = typeArray.getString(R.styleable.SimpleTagImageView_simple_tag_text);
-        mTagTextSize = typeArray.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_textSize, dip2px(DEFAULT_TAG_TEXT_SIZE));
-        mTagTextColor = typeArray.getColor(R.styleable.SimpleTagImageView_simple_tag_textColor, DEFAULT_TAG_TEXT_COLOR);
-        typeArray.recycle();
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.SimpleTagImageView,defStyleAttr,0);
+        mTagOrientation = a.getInteger(R.styleable.SimpleTagImageView_simple_tag_orientation,0);
+        mTagWidth = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_width, dip2px(DEFAULT_TAG_WIDTH));
+        mCornerDistance = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_corner_distance,dip2px(DEFAULT_CORNER_DISTANCE));
+        mTagBackgroundColor = a.getColor(R.styleable.SimpleTagImageView_simple_tag_background_color,DEFAULT_TAG_BACKGROUND_COLOR);
+        mTagText = a.getString(R.styleable.SimpleTagImageView_simple_tag_text);
+        mTagTextSize = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_textSize, dip2px(DEFAULT_TAG_TEXT_SIZE));
+        mTagTextColor = a.getColor(R.styleable.SimpleTagImageView_simple_tag_textColor, DEFAULT_TAG_TEXT_COLOR);
+        mTagEnable = a.getBoolean(R.styleable.SimpleTagImageView_simple_tag_enable,true);
+        mRoundRadius = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_round_radius,0);
+        a.recycle();
         if(TextUtils.isEmpty(mTagText))mTagText = "";
         mPaint = new Paint();
         mPath = new Path();
@@ -93,33 +112,69 @@ public class SimpleTagImageView extends ImageView {
         mTagTextBound = new Rect();
         startPoint = new MyPoint();
         endPoint = new MyPoint();
+        mRoundRect = new RectF();
+    }
+
+    private void setupBitmapPaint() {
+        Drawable drawable = getDrawable();
+        if (drawable == null) {
+            return;
+        }
+        Bitmap mBitmap = drawableToBitmap(drawable);
+        BitmapShader mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        if(getScaleType() != ScaleType.FIT_XY){
+            Log.w(TAG,String.format("Now scale type just support fitXY,other type invalid"));
+        }
+        //now scale type just support fitXY
+        //todo support all scale type
+        Matrix mMatrix = new Matrix();
+        mMatrix.setScale(getWidth() * 1.0f / mBitmap.getWidth(), getHeight() * 1.0f / mBitmap.getHeight());
+        mBitmapShader.setLocalMatrix(mMatrix);
+        if(mBitmapPaint == null) {
+            mBitmapPaint = new Paint();
+            mBitmapPaint.setDither(false);
+            mBitmapPaint.setAntiAlias(true);
+            mBitmapPaint.setShader(mBitmapShader);
+        }
     }
 
     @Override
     protected void onDraw(@SuppressWarnings("NullableProblems") Canvas mCanvas) {
-        super.onDraw(mCanvas);
-        float rDistance = mCornerDistance + mTagWidth/2;
-        chooseTagOrientation(rDistance);
-        mTextPaint.setTextSize(mTagTextSize);
-        mTextPaint.getTextBounds(mTagText,0,mTagText.length(),mTagTextBound);
-        mPaint.setDither(true);
-        mPaint.setAntiAlias(true);
-        mPaint.setColor(mTagBackgroundColor);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeCap(Paint.Cap.SQUARE);
-        mPaint.setStrokeWidth(mTagWidth);
-        mPath.reset();
-        mPath.moveTo(startPoint.x, startPoint.y);
-        mPath.lineTo(endPoint.x, endPoint.y);
-        mCanvas.drawPath(mPath, mPaint);
-        mTextPaint.setColor(mTagTextColor);
-        mTextPaint.setTextSize(mTagTextSize);
-        mTextPaint.setAntiAlias(true);
-//        斜边长度
-        float hypotenuse = THE_SQUARE_ROOT_OF_2 * rDistance;
-        mCanvas.drawTextOnPath(mTagText, mPath, hypotenuse / 2 - mTagTextBound.width() / 2,
-                mTagTextBound.height() / 2, mTextPaint);
+        if(mRoundRadius == 0) {
+            super.onDraw(mCanvas);
+        }else {
+            Drawable d = getDrawable();
+            if(d == null) return;
+            if(d.getIntrinsicWidth() == 0 || d.getIntrinsicHeight() == 0) return;
+            setupBitmapPaint();
+            mRoundRect.set(getPaddingLeft(),getPaddingTop(),getMeasuredWidth() - getPaddingRight(),getMeasuredHeight() - getPaddingBottom());
+            mCanvas.drawRoundRect(mRoundRect, mRoundRadius, mRoundRadius, mBitmapPaint);
+        }
+
+        if(mTagWidth > 0 && mTagEnable) {
+            float rDistance = mCornerDistance + mTagWidth/2;
+            chooseTagOrientation(rDistance);
+            mTextPaint.setTextSize(mTagTextSize);
+            mTextPaint.getTextBounds(mTagText,0,mTagText.length(),mTagTextBound);
+            mPaint.setDither(true);
+            mPaint.setAntiAlias(true);
+            mPaint.setColor(mTagBackgroundColor);
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setStrokeJoin(Paint.Join.ROUND);
+            mPaint.setStrokeCap(Paint.Cap.SQUARE);
+            mPaint.setStrokeWidth(mTagWidth);
+            mPath.reset();
+            mPath.moveTo(startPoint.x, startPoint.y);
+            mPath.lineTo(endPoint.x, endPoint.y);
+            mCanvas.drawPath(mPath, mPaint);
+            mTextPaint.setColor(mTagTextColor);
+            mTextPaint.setTextSize(mTagTextSize);
+            mTextPaint.setAntiAlias(true);
+//          斜边长度
+            float hypotenuse = THE_SQUARE_ROOT_OF_2 * rDistance;
+            mCanvas.drawTextOnPath(mTagText, mPath, hypotenuse / 2 - mTagTextBound.width() / 2,
+                    mTagTextBound.height() / 2, mTextPaint);
+        }
     }
 
     private void chooseTagOrientation(float rDistance) {
@@ -260,13 +315,51 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
+    @SuppressWarnings("unused")
+    public void setTagEnable(boolean tagEnable) {
+        if(this.mTagEnable == tagEnable) return ;
+        this.mTagEnable = tagEnable;
+        invalidate();
+    }
+
+    @SuppressWarnings("unused")
+    public boolean getTagEnable() {
+        return this.mTagEnable;
+    }
+
+    @SuppressWarnings("unused")
+    public  int getTagRoundRadius() {
+        return this.mRoundRadius;
+    }
+
+    public void setTagRoundRadius(int roundRadius) {
+        if(this.mRoundRadius == roundRadius) return;
+        this.mRoundRadius = roundRadius;
+        invalidate();
+    }
+
+
+
     private int dip2px(int dip) {
         return (int)(mDensity * dip + 0.5f);
     }
 
-    @SuppressWarnings("unused")
     private int px2dip(float px) {
         return (int)(px/mDensity + 0.5f);
+    }
+
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            return bitmapDrawable.getBitmap();
+        }
+        int w = drawable.getIntrinsicWidth();
+        int h = drawable.getIntrinsicHeight();
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, w, h);
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     static class MyPoint {

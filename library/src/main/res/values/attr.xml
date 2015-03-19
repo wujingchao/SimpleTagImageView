@@ -13,5 +13,7 @@
             <enum name="left_bottom" value="2"/>
             <enum name="right_bottom" value="3"/>
         </attr>
+        <attr name="simple_tag_enable" format="boolean"/>
+        <attr name="simple_tag_round_radius" format="dimension"/>
     </declare-styleable>
 </resources>

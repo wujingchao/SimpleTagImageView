@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -38,6 +39,8 @@ public class MainActivity extends Activity {
         setUpTagBackgroundColor();
         setUpTagWidth();
         setUpTagOrientation();
+        setUpTagRoundRadius();
+        setUpScaleType();
     }
 
     private void setUpTextSizeSeekBar() {
@@ -210,4 +213,45 @@ public class MainActivity extends Activity {
             mSimpleTagImageView.setTagText(savedInstanceState.getString("tag_text"));
         }
     }
+
+    private void setUpTagRoundRadius() {
+        SeekBar mTextSizeSeekBar = (SeekBar) findViewById(R.id.sb_tag_round_radius);
+        mTextSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSimpleTagImageView.setTagRoundRadius(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private void setUpScaleType() {
+        Spinner mSpinner = (Spinner) findViewById(R.id.spinner_tag_scale_type);
+//        final ImageView.ScaleType []  types = ImageView.ScaleType.values();
+        final ImageView.ScaleType []  types = {ImageView.ScaleType.FIT_XY};
+        final SpinnerAdapter mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, types);
+        mSpinner.setAdapter(mAdapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG,types[position].toString());
+                mSimpleTagImageView.setScaleType(types[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
 }
