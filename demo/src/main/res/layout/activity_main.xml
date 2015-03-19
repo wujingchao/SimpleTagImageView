@@ -3,14 +3,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#0f45494A">
- 
+
         <net.wujingchao.android.view.SimpleTagImageView
             xmlns:simple="http://schemas.android.com/apk/res-auto"
             android:id="@+id/stiv"
             android:layout_margin="18dip"
             android:layout_width="256dip"
             android:layout_height="192dip"
-            android:scaleType="fitXY"
             android:src="@drawable/qwer"
             simple:simple_tag_textSize="18sp"
             simple:simple_corner_distance="30dp"

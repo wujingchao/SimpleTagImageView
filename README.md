@@ -20,7 +20,6 @@ ImageView with a tag in android. So it's a ImageView.
             android:layout_margin="18dip"
             android:layout_width="256dip"
             android:layout_height="192dip"
-            android:scaleType="fitXY"
             android:src="@drawable/qwer"
             simple:simple_tag_textSize="18sp"
             simple:simple_corner_distance="30dp"
