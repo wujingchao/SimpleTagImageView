@@ -3,13 +3,13 @@ ImageView with a tag in android. So it's a ImageView.
 
 ## Demo
 
-   <img src="./demo.jpg"  width="540" heigit="960" alt="Screenshot"/>
+   <img src="./demo2.gif"  width="401" heigit="638" alt="Screenshot"/>
 
 
 ####Warning:When you set the round radius,the simpletagimageview scale type just  support fitXY now!
 <br/>
 <p>
-   <img src="./demo2.gif"  width="401" heigit="638" alt="Screenshot"/>
+   <img src="./demo.jpg"  width="540" heigit="960" alt="Screenshot"/>
 </p>
 
 <br/>
