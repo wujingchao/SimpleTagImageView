@@ -1,9 +1,9 @@
 .gitignore
 .gradle
 /local.properties
-/.idea
 .DS_Store
 /build
 .idea/
 *.dex
 *.iml
+.idea
