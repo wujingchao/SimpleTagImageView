@@ -12,7 +12,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -33,19 +33,14 @@ install {
         pom {
             project {
                 packaging 'aar'
-
-                //添加项目描述
                 name 'SimpleTagImageView for Android'
                 url siteUrl
-
-                //设置开源证书信息
                 licenses {
                     license {
                         name 'The Apache Software License, Version 2.0'
                         url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
-                //添加开发者信息
                 developers {
                     developer {
                         id 'wujingchao'
@@ -65,8 +60,7 @@ install {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
+
 }
 
 

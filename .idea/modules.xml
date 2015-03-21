@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SimpleTagImageView.iml" filepath="$PROJECT_DIR$/SimpleTagImageView.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simple-tag-imageview/simple-tag-imageview.iml" filepath="$PROJECT_DIR$/simple-tag-imageview/simple-tag-imageview.iml" />
     </modules>
   </component>
 </project>

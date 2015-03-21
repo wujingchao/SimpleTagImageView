@@ -33,8 +33,25 @@ ImageView with a tag in android. So it's a ImageView.
             simple:simple_tag_enable="true"
             simple:simple_tag_round_radius="20dp"/>
 	
-#### In order to use it , just import as a module in android studio. In gradle dependencies append :
-	compile project(':library')  //library is your module name
+### Quick Start
+
+####Gradle
+
+	compile 'net.wujingchao.android.view:simple-tag-imageview:1.0.0'
+
+####Maven
+	<dependency>
+		<groupId>net.wujingchao.android.view</groupId>
+		<artifactId>simple-tag-imageview</artifactId>
+		<version>1.0.0</version>
+		<type>aar</type>
+	</dependency> 
+
+####Ivy
+
+	<dependency org='simple-tag-imageview' name='net.wujingchao.android.view' rev='1.0.0'>
+		<artifact name='net.wujingchao.android.view' ext='aar'></artifact>
+	</dependency>
 
 ######You can mail me => wujingchao@aliyun.com
 
