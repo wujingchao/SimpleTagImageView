@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
         setUpTagOrientation();
         setUpTagRoundRadius();
         setUpScaleType();
+        setUpAnimation();
     }
 
     private void setUpTextSizeSeekBar() {
@@ -180,6 +181,8 @@ public class MainActivity extends Activity {
         orientations.put("RIGHT_TOP",SimpleTagImageView.RIGHT_TOP);
         orientations.put("LEFT_BOTTOM",SimpleTagImageView.LEFT_BOTTOM);
         orientations.put("RIGHT_BOTTOM",SimpleTagImageView.RIGHT_BOTTOM);
+        orientations.put("HORIZONTAL",SimpleTagImageView.HORIZONTAL);
+        orientations.put("VERTICAL",SimpleTagImageView.VERTICAL);
         Spinner mSpinner = (Spinner) findViewById(R.id.spinner_tag_orientation);
         final Object [] keys = orientations.keySet().toArray();
         final SpinnerAdapter mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,keys);
@@ -243,7 +246,7 @@ public class MainActivity extends Activity {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG,types[position].toString());
+                Log.d(TAG, types[position].toString());
                 mSimpleTagImageView.setScaleType(types[position]);
             }
 
@@ -254,4 +257,26 @@ public class MainActivity extends Activity {
         });
     }
 
+    private void setUpAnimation(){
+        final Map<String,Byte> anims = new LinkedHashMap<>();
+        anims.put("NONE",SimpleTagImageView.NONE);
+        anims.put("FADE_IN",SimpleTagImageView.FADE_IN);
+        anims.put("FADE_OUT",SimpleTagImageView.FADE_OUT);
+        Spinner mSpinner = (Spinner) findViewById(R.id.spinner_tag_anim);
+        final Object [] keys = anims.keySet().toArray();
+        final SpinnerAdapter mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,keys);
+        mSpinner.setAdapter(mAdapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String key = (String) keys[position];
+                mSimpleTagImageView.setAnim(anims.get(key));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 }
