@@ -1,5 +1,7 @@
 package net.wujingchao.android.view;
 
+import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -13,6 +15,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -304,23 +307,49 @@ public class SimpleTagImageView extends ImageView {
         return mAnim;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void setAnim(int mAnim) {
         this.mAnim = mAnim;
         switch (mAnim){
             case NONE:
-                run = false;
                 alpha = finalAlpha;
                 invalidate();
                 break;
             case FADE_IN:
-                run = true;
-                alpha = 0;
-                new MyThread().start();
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+                    ValueAnimator animator = ValueAnimator.ofInt(0, finalAlpha);
+                    animator.setDuration(1500);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            alpha = (int)animation.getAnimatedValue();
+                            invalidate();
+                        }
+                    });
+                    animator.start();
+                }else{
+                    run = true;
+                    alpha = 0;
+                    new MyThread().start();
+                }
                 break;
             case FADE_OUT:
-                run = true;
-                alpha = finalAlpha;
-                new MyThread().start();
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+                    ValueAnimator animator = ValueAnimator.ofInt(finalAlpha,0);
+                    animator.setDuration(1500);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            alpha = (int) animation.getAnimatedValue();
+                            invalidate();
+                        }
+                    });
+                    animator.start();
+                }else{
+                    run = true;
+                    alpha = finalAlpha;
+                    new MyThread().start();
+                }
                 break;
             default:
                 break;
