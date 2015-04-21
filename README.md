@@ -53,7 +53,11 @@ ImageView with a tag in android. So it's a ImageView.
 		<artifact name='net.wujingchao.android.view' ext='aar'></artifact>
 	</dependency>
 
-######You can mail me => wujingchao@aliyun.com
+
+##Developed By
+
+
+- wujingchao -  wujingchao@aliyun.com
 
 
 
