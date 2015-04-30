@@ -41,7 +41,7 @@
             <TableRow>
                 <SeekBar
                     android:id="@+id/sb_corner_distance"
-                    android:max="100"
+                    android:max="300"
                     android:progress="30"/>
                 <TextView
                     android:text="cornerDistance"
@@ -122,6 +122,17 @@
                     android:id="@+id/spinner_tag_scale_type"/>
                 <TextView
                     android:text="ScaleType(When set round radius)"
+                    android:layout_gravity="center_vertical"/>
+            </TableRow>
+
+            <TableRow>
+                <Spinner
+                    android:layout_height="30dip"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:id="@+id/spinner_tag_anim"/>
+                <TextView
+                    android:text="Animation"
                     android:layout_gravity="center_vertical"/>
             </TableRow>
         </TableLayout>

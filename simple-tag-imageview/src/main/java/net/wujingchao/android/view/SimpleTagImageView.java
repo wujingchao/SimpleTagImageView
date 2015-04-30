@@ -1,5 +1,7 @@
 package net.wujingchao.android.view;
 
+import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -13,6 +15,9 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -34,6 +39,10 @@ public class SimpleTagImageView extends ImageView {
     public  static final byte LEFT_BOTTOM = 0x02;
 
     public  static final byte RIGHT_BOTTOM = 0x03;
+
+    public  static final byte HORIZONTAL = 0x04;
+
+    public  static final byte VERTICAL = 0x05;
 
     private final static float THE_SQUARE_ROOT_OF_2 = (float) Math.sqrt(2);
 
@@ -82,6 +91,22 @@ public class SimpleTagImageView extends ImageView {
     private boolean mTagEnable;
 
     private int mRoundRadius;
+
+    public static final byte NONE     = 0x00;
+    public static final byte FADE_IN  = 0x01;
+    public static final byte FADE_OUT = 0x02;
+
+    private int mAnim = NONE;
+    private final int finalAlpha = 175;
+    private int alpha = finalAlpha;
+    private boolean run = true;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            invalidate();
+        }
+    };
 
     public SimpleTagImageView(Context context) {
         this(context, null);
@@ -155,7 +180,7 @@ public class SimpleTagImageView extends ImageView {
             float rDistance = mCornerDistance + mTagWidth/2;
             chooseTagOrientation(rDistance);
             mTextPaint.setTextSize(mTagTextSize);
-            mTextPaint.getTextBounds(mTagText,0,mTagText.length(),mTagTextBound);
+            mTextPaint.getTextBounds(mTagText, 0, mTagText.length(), mTagTextBound);
             mPaint.setDither(true);
             mPaint.setAntiAlias(true);
             mPaint.setColor(mTagBackgroundColor);
@@ -163,6 +188,7 @@ public class SimpleTagImageView extends ImageView {
             mPaint.setStrokeJoin(Paint.Join.ROUND);
             mPaint.setStrokeCap(Paint.Cap.SQUARE);
             mPaint.setStrokeWidth(mTagWidth);
+            mPaint.setAlpha(alpha);
             mPath.reset();
             mPath.moveTo(startPoint.x, startPoint.y);
             mPath.lineTo(endPoint.x, endPoint.y);
@@ -170,8 +196,16 @@ public class SimpleTagImageView extends ImageView {
             mTextPaint.setColor(mTagTextColor);
             mTextPaint.setTextSize(mTagTextSize);
             mTextPaint.setAntiAlias(true);
+            mTextPaint.setAlpha(alpha);
 //          斜边长度
-            float hypotenuse = THE_SQUARE_ROOT_OF_2 * rDistance;
+            float hypotenuse = 0;
+            if(mTagOrientation<=3) {
+                hypotenuse = THE_SQUARE_ROOT_OF_2 * rDistance;
+            }else if(mTagOrientation==HORIZONTAL){
+                hypotenuse = getMeasuredWidth();
+            }else if(mTagOrientation==VERTICAL){
+                hypotenuse = getMeasuredHeight();
+            }
             mCanvas.drawTextOnPath(mTagText, mPath, hypotenuse / 2 - mTagTextBound.width() / 2,
                     mTagTextBound.height() / 2, mTextPaint);
         }
@@ -204,6 +238,120 @@ public class SimpleTagImageView extends ImageView {
                 startPoint.y = mHeight;
                 endPoint.x = mWidth;
                 endPoint.y = mHeight - rDistance;
+                break;
+            case 4:
+                if(rDistance<=mHeight) {
+                    startPoint.x = 0;
+                    startPoint.y = rDistance;
+                    endPoint.x = mWidth;
+                    endPoint.y = rDistance;
+                }else{
+                    startPoint.x = 0;
+                    startPoint.y = mHeight-mTagWidth/2;
+                    endPoint.x = mWidth;
+                    endPoint.y = mHeight-mTagWidth/2;
+                }
+                break;
+            case 5:
+                if(rDistance<mWidth/2){
+                    startPoint.x = rDistance;
+                    startPoint.y = mHeight;
+                    endPoint.x = rDistance;
+                    endPoint.y = 0;
+                }else if(rDistance>=mWidth/2&&rDistance<=mWidth){
+                    startPoint.x = rDistance;
+                    startPoint.y = 0;
+                    endPoint.x = rDistance;
+                    endPoint.y = mHeight;
+                }else{
+                    startPoint.x = mWidth-mTagWidth/2;
+                    startPoint.y = 0;
+                    endPoint.x = mWidth-mTagWidth/2;
+                    endPoint.y = mHeight;
+                }
+                break;
+        }
+    }
+
+    private class MyThread extends Thread{
+        @Override
+        public void run() {
+            super.run();
+            while (run) {
+                mHandler.sendEmptyMessage(0);
+                switch (mAnim){
+                    case NONE:
+                        run = false;
+                        break;
+                    case FADE_IN:
+                        alpha = alpha+1;
+                        if(alpha>=finalAlpha){
+                            run = false;
+                        }
+                        break;
+                    case FADE_OUT:
+                        alpha = alpha-1;
+                        if(alpha<=0){
+                            run = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                SystemClock.sleep(7);
+            }
+        }
+    }
+
+    public int getAnim() {
+        return mAnim;
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void setAnim(int mAnim) {
+        this.mAnim = mAnim;
+        switch (mAnim){
+            case NONE:
+                alpha = finalAlpha;
+                invalidate();
+                break;
+            case FADE_IN:
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+                    ValueAnimator animator = ValueAnimator.ofInt(0, finalAlpha);
+                    animator.setDuration(1500);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            alpha = (int)animation.getAnimatedValue();
+                            invalidate();
+                        }
+                    });
+                    animator.start();
+                }else{
+                    run = true;
+                    alpha = 0;
+                    new MyThread().start();
+                }
+                break;
+            case FADE_OUT:
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+                    ValueAnimator animator = ValueAnimator.ofInt(finalAlpha,0);
+                    animator.setDuration(1500);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            alpha = (int) animation.getAnimatedValue();
+                            invalidate();
+                        }
+                    });
+                    animator.start();
+                }else{
+                    run = true;
+                    alpha = finalAlpha;
+                    new MyThread().start();
+                }
+                break;
+            default:
                 break;
         }
     }
