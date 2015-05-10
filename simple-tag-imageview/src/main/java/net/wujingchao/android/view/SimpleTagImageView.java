@@ -25,7 +25,7 @@ import wujingchao.net.mylibrary.R;
  */
 public class SimpleTagImageView extends ImageView {
 
-    private final static String TAG = "SimpleTagImageView";
+    public static final String TAG = "SimpleTagImageView";
 
     public  static final byte LEFT_TOP = 0x00;
 
@@ -35,13 +35,13 @@ public class SimpleTagImageView extends ImageView {
 
     public  static final byte RIGHT_BOTTOM = 0x03;
 
-    private final static float THE_SQUARE_ROOT_OF_2 = (float) Math.sqrt(2);
+    private static final float THE_SQUARE_ROOT_OF_2 = (float) Math.sqrt(2);
 
-    private final static int DEFAULT_TAG_WIDTH = 20;
+    private static final int DEFAULT_TAG_WIDTH = 20;
 
-    private final static int DEFAULT_CORNER_DISTANCE = 20;
+    private static final int DEFAULT_CORNER_DISTANCE = 20;
 
-    private final static int DEFAULT_TAG_BACKGROUND_COLOR = 0x9F27CDC0;
+    private static final int DEFAULT_TAG_BACKGROUND_COLOR = 0x9F27CDC0;
 
     private static final int DEFAULT_TAG_TEXT_SIZE = 15;
 
@@ -113,99 +113,6 @@ public class SimpleTagImageView extends ImageView {
         startPoint = new MyPoint();
         endPoint = new MyPoint();
         mRoundRect = new RectF();
-    }
-
-    private void setupBitmapPaint() {
-        Drawable drawable = getDrawable();
-        if (drawable == null) {
-            return;
-        }
-        Bitmap mBitmap = drawableToBitmap(drawable);
-        BitmapShader mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        if(getScaleType() != ScaleType.FIT_XY){
-            Log.w(TAG,String.format("Now scale type just support fitXY,other type invalid"));
-        }
-        //now scale type just support fitXY
-        //todo support all scale type
-        Matrix mMatrix = new Matrix();
-        mMatrix.setScale(getWidth() * 1.0f / mBitmap.getWidth(), getHeight() * 1.0f / mBitmap.getHeight());
-        mBitmapShader.setLocalMatrix(mMatrix);
-        if(mBitmapPaint == null) {
-            mBitmapPaint = new Paint();
-            mBitmapPaint.setDither(false);
-            mBitmapPaint.setAntiAlias(true);
-            mBitmapPaint.setShader(mBitmapShader);
-        }
-    }
-
-    @Override
-    protected void onDraw(@SuppressWarnings("NullableProblems") Canvas mCanvas) {
-        if(mRoundRadius == 0) {
-            super.onDraw(mCanvas);
-        }else {
-            Drawable d = getDrawable();
-            if(d == null) return;
-            if(d.getIntrinsicWidth() == 0 || d.getIntrinsicHeight() == 0) return;
-            setupBitmapPaint();
-            mRoundRect.set(getPaddingLeft(),getPaddingTop(),getMeasuredWidth() - getPaddingRight(),getMeasuredHeight() - getPaddingBottom());
-            mCanvas.drawRoundRect(mRoundRect, mRoundRadius, mRoundRadius, mBitmapPaint);
-        }
-
-        if(mTagWidth > 0 && mTagEnable) {
-            float rDistance = mCornerDistance + mTagWidth/2;
-            chooseTagOrientation(rDistance);
-            mTextPaint.setTextSize(mTagTextSize);
-            mTextPaint.getTextBounds(mTagText,0,mTagText.length(),mTagTextBound);
-            mPaint.setDither(true);
-            mPaint.setAntiAlias(true);
-            mPaint.setColor(mTagBackgroundColor);
-            mPaint.setStyle(Paint.Style.STROKE);
-            mPaint.setStrokeJoin(Paint.Join.ROUND);
-            mPaint.setStrokeCap(Paint.Cap.SQUARE);
-            mPaint.setStrokeWidth(mTagWidth);
-            mPath.reset();
-            mPath.moveTo(startPoint.x, startPoint.y);
-            mPath.lineTo(endPoint.x, endPoint.y);
-            mCanvas.drawPath(mPath, mPaint);
-            mTextPaint.setColor(mTagTextColor);
-            mTextPaint.setTextSize(mTagTextSize);
-            mTextPaint.setAntiAlias(true);
-//          斜边长度
-            float hypotenuse = THE_SQUARE_ROOT_OF_2 * rDistance;
-            mCanvas.drawTextOnPath(mTagText, mPath, hypotenuse / 2 - mTagTextBound.width() / 2,
-                    mTagTextBound.height() / 2, mTextPaint);
-        }
-    }
-
-    private void chooseTagOrientation(float rDistance) {
-        int mWidth = getMeasuredWidth();
-        int mHeight = getMeasuredHeight();
-        switch (mTagOrientation) {
-            case 0:
-                startPoint.x = 0;
-                startPoint.y = rDistance;
-                endPoint.x = rDistance;
-                endPoint.y = 0;
-                break;
-            case 1:
-                startPoint.x = mWidth - rDistance;
-                startPoint.y = 0;
-                endPoint.x = mWidth;
-                endPoint.y = rDistance;
-                break;
-            case 2:
-                startPoint.x = 0;
-                startPoint.y = mHeight - rDistance;
-                endPoint.x = rDistance;
-                endPoint.y = mHeight;
-                break;
-            case 3:
-                startPoint.x = mWidth - rDistance;
-                startPoint.y = mHeight;
-                endPoint.x = mWidth;
-                endPoint.y = mHeight - rDistance;
-                break;
-        }
     }
 
     /**
@@ -338,7 +245,98 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
+    @Override
+    protected void onDraw(@SuppressWarnings("NullableProblems") Canvas mCanvas) {
+        if(mRoundRadius == 0) {
+            super.onDraw(mCanvas);
+        }else {
+            Drawable d = getDrawable();
+            if(d == null) return;
+            if(d.getIntrinsicWidth() == 0 || d.getIntrinsicHeight() == 0) return;
+            setupBitmapPaint();
+            mRoundRect.set(getPaddingLeft(),getPaddingTop(),getMeasuredWidth() - getPaddingRight(),getMeasuredHeight() - getPaddingBottom());
+            mCanvas.drawRoundRect(mRoundRect, mRoundRadius, mRoundRadius, mBitmapPaint);
+        }
 
+        if(mTagWidth > 0 && mTagEnable) {
+            float rDistance = mCornerDistance + mTagWidth/2;
+            chooseTagOrientation(rDistance);
+            mTextPaint.setTextSize(mTagTextSize);
+            mTextPaint.getTextBounds(mTagText,0,mTagText.length(),mTagTextBound);
+            mPaint.setDither(true);
+            mPaint.setAntiAlias(true);
+            mPaint.setColor(mTagBackgroundColor);
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setStrokeJoin(Paint.Join.ROUND);
+            mPaint.setStrokeCap(Paint.Cap.SQUARE);
+            mPaint.setStrokeWidth(mTagWidth);
+            mPath.reset();
+            mPath.moveTo(startPoint.x, startPoint.y);
+            mPath.lineTo(endPoint.x, endPoint.y);
+            mCanvas.drawPath(mPath, mPaint);
+            mTextPaint.setColor(mTagTextColor);
+            mTextPaint.setTextSize(mTagTextSize);
+            mTextPaint.setAntiAlias(true);
+//          斜边长度
+            float hypotenuse = THE_SQUARE_ROOT_OF_2 * rDistance;
+            mCanvas.drawTextOnPath(mTagText, mPath, hypotenuse / 2 - mTagTextBound.width() / 2,
+                    mTagTextBound.height() / 2, mTextPaint);
+        }
+    }
+
+    private void chooseTagOrientation(float rDistance) {
+        int mWidth = getMeasuredWidth();
+        int mHeight = getMeasuredHeight();
+        switch (mTagOrientation) {
+            case 0:
+                startPoint.x = 0;
+                startPoint.y = rDistance;
+                endPoint.x = rDistance;
+                endPoint.y = 0;
+                break;
+            case 1:
+                startPoint.x = mWidth - rDistance;
+                startPoint.y = 0;
+                endPoint.x = mWidth;
+                endPoint.y = rDistance;
+                break;
+            case 2:
+                startPoint.x = 0;
+                startPoint.y = mHeight - rDistance;
+                endPoint.x = rDistance;
+                endPoint.y = mHeight;
+                break;
+            case 3:
+                startPoint.x = mWidth - rDistance;
+                startPoint.y = mHeight;
+                endPoint.x = mWidth;
+                endPoint.y = mHeight - rDistance;
+                break;
+        }
+    }
+
+    private void setupBitmapPaint() {
+        Drawable drawable = getDrawable();
+        if (drawable == null) {
+            return;
+        }
+        Bitmap mBitmap = drawableToBitmap(drawable);
+        BitmapShader mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        if(getScaleType() != ScaleType.FIT_XY){
+            Log.w(TAG,String.format("Now scale type just support fitXY,other type invalid"));
+        }
+        //now scale type just support fitXY
+        //todo support all scale type
+        Matrix mMatrix = new Matrix();
+        mMatrix.setScale(getWidth() * 1.0f / mBitmap.getWidth(), getHeight() * 1.0f / mBitmap.getHeight());
+        mBitmapShader.setLocalMatrix(mMatrix);
+        if(mBitmapPaint == null) {
+            mBitmapPaint = new Paint();
+            mBitmapPaint.setDither(false);
+            mBitmapPaint.setAntiAlias(true);
+            mBitmapPaint.setShader(mBitmapShader);
+        }
+    }
 
     private int dip2px(int dip) {
         return (int)(mDensity * dip + 0.5f);
