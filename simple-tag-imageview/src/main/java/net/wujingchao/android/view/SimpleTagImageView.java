@@ -124,7 +124,6 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
-    @SuppressWarnings("unused")
     public int getTagTextSize(){
         return mTagTextSize;
     }
@@ -143,12 +142,10 @@ public class SimpleTagImageView extends ImageView {
      *
      * @return unit:dip
      */
-    @SuppressWarnings("unused")
     public int getCornerDistance() {
         return px2dip(this.mCornerDistance);
     }
 
-    @SuppressWarnings("unused")
     public int getTagTextColor() {
         return this.mTagTextColor;
     }
@@ -159,7 +156,6 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
-    @SuppressWarnings("unused")
     public String getTagText() {
         return this.mTagText;
     }
@@ -176,7 +172,6 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
-    @SuppressWarnings("unused")
     public int getTagBackgroundColor() {
         return this.mTagBackgroundColor;
     }
@@ -184,7 +179,6 @@ public class SimpleTagImageView extends ImageView {
     /**
      * @return unit:dip
      */
-    @SuppressWarnings("unused")
     public int getTagWidth() {
         return px2dip(this.mTagWidth);
     }
@@ -204,7 +198,6 @@ public class SimpleTagImageView extends ImageView {
      *          2 : left_bottom
      *          3 : right_bottom
      */
-    @SuppressWarnings("unused")
     public int getTagOrientation() {
         return mTagOrientation;
     }
@@ -222,19 +215,16 @@ public class SimpleTagImageView extends ImageView {
         invalidate();
     }
 
-    @SuppressWarnings("unused")
     public void setTagEnable(boolean tagEnable) {
         if(this.mTagEnable == tagEnable) return ;
         this.mTagEnable = tagEnable;
         invalidate();
     }
 
-    @SuppressWarnings("unused")
     public boolean getTagEnable() {
         return this.mTagEnable;
     }
 
-    @SuppressWarnings("unused")
     public  int getTagRoundRadius() {
         return this.mRoundRadius;
     }
