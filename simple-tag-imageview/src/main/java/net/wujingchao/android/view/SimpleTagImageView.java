@@ -18,7 +18,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
-import wujingchao.net.mylibrary.R;
 
 /**
  * @author wujingchao  2015-02-20 email:wujingchao@aliyun.com
