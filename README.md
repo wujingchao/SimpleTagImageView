@@ -37,21 +37,15 @@ ImageView with a tag in android. So it's a ImageView.
 
 ####Gradle
 
-	compile 'net.wujingchao.android.view:simple-tag-imageview:1.0.0'
+	compile 'net.wujingchao.android.view:simple-tag-imageview:1.0.1'
 
-####Maven
+####Maven(Jcenter Repository)
 	<dependency>
 		<groupId>net.wujingchao.android.view</groupId>
 		<artifactId>simple-tag-imageview</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 		<type>aar</type>
 	</dependency> 
-
-####Ivy
-
-	<dependency org='simple-tag-imageview' name='net.wujingchao.android.view' rev='1.0.0'>
-		<artifact name='net.wujingchao.android.view' ext='aar'></artifact>
-	</dependency>
 
 
 ##Developed By
