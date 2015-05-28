@@ -39,7 +39,9 @@ ImageView with a tag in android. So it's a ImageView.
 
 	compile 'net.wujingchao.android.view:simple-tag-imageview:1.0.1'
 
-####Maven(Jcenter Repository)
+####Maven
+	
+	<!-- you should configure jcenter repository-->
 	<dependency>
 		<groupId>net.wujingchao.android.view</groupId>
 		<artifactId>simple-tag-imageview</artifactId>
