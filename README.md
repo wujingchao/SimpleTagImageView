@@ -53,7 +53,7 @@ ImageView with a tag in android. So it's a ImageView.
 ##Developed By
 
 
-- wujingchao -  wujingchao@aliyun.com
+- wujingchao -  wujingchao92@gmail.com
 
 
 
