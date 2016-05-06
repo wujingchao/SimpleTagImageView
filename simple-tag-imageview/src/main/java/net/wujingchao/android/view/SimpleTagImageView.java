@@ -113,6 +113,15 @@ public class SimpleTagImageView extends ImageView {
         endPoint = new MyPoint();
         mRoundRect = new RectF();
     }
+    
+    @Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+		int width = MeasureSpec.getSize(widthMeasureSpec);
+		int height = width * getDrawable().getIntrinsicHeight() / getDrawable().getIntrinsicWidth();
+		setMeasuredDimension(width, height);
+	}
 
     /**
      *
