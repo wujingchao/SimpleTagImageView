@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -34,6 +35,14 @@ public class SimpleTagImageView extends ImageView {
 
     public  static final byte RIGHT_BOTTOM = 0x03;
 
+    public static final byte TEXT_STYLE_NORMAL = 0x00;
+
+    public static final byte TEXT_STYLE_BOLD = 0x01;
+
+    public static final byte TEXT_STYLE_ITALIC = 0x02;
+
+    public static final byte TEXT_STYLE_BOLD_ITALIC = 0x03;
+
     private static final float THE_SQUARE_ROOT_OF_2 = (float) Math.sqrt(2);
 
     private static final int DEFAULT_TAG_WIDTH = 20;
@@ -45,6 +54,8 @@ public class SimpleTagImageView extends ImageView {
     private static final int DEFAULT_TAG_TEXT_SIZE = 15;
 
     private static final int DEFAULT_TAG_TEXT_COLOR = 0xFFFFFFFF;
+
+    private static final int DEFAULT_TAG_TEXT_STYLE = 0;
 
     private float mCornerDistance;
 
@@ -59,6 +70,8 @@ public class SimpleTagImageView extends ImageView {
     private String mTagText;
 
     private int mTagTextSize;
+
+    private int mTagTextStyle;
 
     private Paint mTextPaint;
 
@@ -100,6 +113,7 @@ public class SimpleTagImageView extends ImageView {
         mTagBackgroundColor = a.getColor(R.styleable.SimpleTagImageView_simple_tag_background_color,DEFAULT_TAG_BACKGROUND_COLOR);
         mTagText = a.getString(R.styleable.SimpleTagImageView_simple_tag_text);
         mTagTextSize = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_textSize, dip2px(DEFAULT_TAG_TEXT_SIZE));
+        mTagTextStyle = a.getInteger(R.styleable.SimpleTagImageView_simple_tag_textStyle, DEFAULT_TAG_TEXT_STYLE);
         mTagTextColor = a.getColor(R.styleable.SimpleTagImageView_simple_tag_textColor, DEFAULT_TAG_TEXT_COLOR);
         mTagEnable = a.getBoolean(R.styleable.SimpleTagImageView_simple_tag_enable,true);
         mRoundRadius = a.getDimensionPixelSize(R.styleable.SimpleTagImageView_simple_tag_round_radius,0);
@@ -171,6 +185,16 @@ public class SimpleTagImageView extends ImageView {
     public void setTagText(String tagText){
         if(tagText.equals(this.mTagText))return;
         this.mTagText = tagText;
+        invalidate();
+    }
+
+    public int getTagTextStyle() {
+        return this.mTagTextStyle;
+    }
+
+    public void setTagTextStyle (int tagStyle){
+        if(this.mTagTextStyle == tagStyle)return;
+        this.mTagTextStyle = tagStyle;
         invalidate();
     }
 
@@ -274,6 +298,7 @@ public class SimpleTagImageView extends ImageView {
             mCanvas.drawPath(mPath, mPaint);
             mTextPaint.setColor(mTagTextColor);
             mTextPaint.setTextSize(mTagTextSize);
+            mTextPaint.setTypeface(Typeface.defaultFromStyle(mTagTextStyle));
             mTextPaint.setAntiAlias(true);
 //          斜边长度
             float hypotenuse = THE_SQUARE_ROOT_OF_2 * rDistance;
